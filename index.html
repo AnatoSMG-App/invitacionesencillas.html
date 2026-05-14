@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anato SMG - VIP Service</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #0d1b2a; color: white; text-align: center; margin: 0; padding: 15px; }
+        .container { background: #1b263b; border-radius: 20px; padding: 20px; max-width: 500px; margin: auto; border: 2px solid #00b4d8; box-shadow: 0 0 20px rgba(0,180,216,0.3); }
+        .img-comparativa { width: 100%; border-radius: 15px; border: 2px solid #00ffff; margin-bottom: 15px; }
+        .titulo-seccion { color: #00ffff; font-weight: bold; font-size: 20px; margin: 10px 0; text-transform: uppercase; }
+        .menu-botones { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .btn-main { padding: 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 16px; color: white; transition: 0.3s; }
+        .btn-verde { background: #28a745; box-shadow: 0 0 10px #28a745; }
+        .btn-verde:hover { transform: scale(1.02); }
+        .btn-rojo { background: #dc3545; opacity: 0.8; }
+        .btn-azul { background: #0077b6; border: 1px solid #00ffff; }
+        #seccion-referidos { display: none; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-top: 20px; border: 1px dashed yellow; }
+        .label-amarillo { color: yellow; display: block; margin-bottom: 10px; font-weight: bold; }
+        input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: none; box-sizing: border-box; background: #0d1b2a; color: white; border: 1px solid #00b4d8; }
+        .btn-final { background: #f0ad4e; color: black; width: 100%; padding: 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        #cliente-nombre { color: #00ffff; font-size: 1.2rem; display: block; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="logo.png" style="width: 120px; margin-bottom: 10px;" alt="Anato SMG">
+        <img src="comparativa.jpg" class="img-comparativa" alt="Mantenimiento">
+
+        <div class="titulo-seccion">
+            <span id="cliente-nombre">¡BIENVENIDO!</span>
+            🛡️ PROTEGE TU EQUIPO
+        </div>
+
+        <div class="menu-botones">
+            <button class="btn-main btn-verde" onclick="pedirServicio()">✅ PROTEGER MI EQUIPO</button>
+            <button class="btn-main btn-rojo" onclick="cerrarSistema()">❌ CORRER RIESGO</button>
+            <button class="btn-main btn-azul" onclick="mostrarReferidos()">💰 GENERAR RECOMPENSA (10%)</button>
+        </div>
+
+        <div id="seccion-referidos">
+            <span class="label-amarillo">[Referidos] REGISTRO VIP / RECOMPENSAS</span>
+            <input type="text" id="mi-nombre" placeholder="Tu Nombre">
+            <input type="tel" id="mi-whatsapp" placeholder="Tu WhatsApp (Ej: 04121234567)">
+            <input type="text" id="nombre-amigo" placeholder="Nombre del Amigo">
+            <input type="tel" id="tlf-amigo" placeholder="WhatsApp del Amigo">
+            <button class="btn-final" onclick="enviarRecomendacion()">🚀 GENERAR Y ENVIAR</button>
+        </div>
+    </div>
+
+    <audio id="audio-aplausos" src="aplausos.mp3"></audio>
+    <audio id="audio-rechazo" src="rechazo.mp3"></audio>
+
+    <script>
+        const miTelefono = "584164308731"; 
+
+        // Leer datos del enlace (Generador)
+        const urlParams = new URLSearchParams(window.location.search);
+        const clienteNom = urlParams.get('cliente') || "Cliente VIP";
+        const clienteUbi = urlParams.get('lugar') || "Ubicación por definir";
+
+        // Mostrar nombre del cliente en pantalla
+        if(clienteNom !== "Cliente VIP") {
+            document.getElementById('cliente-nombre').innerText = `HOLA, ${clienteNom.toUpperCase()}`;
+        }
+
+        function sonar(id) { 
+            const audio = document.getElementById(id);
+            if(audio) audio.play(); 
+        }
+
+        function cerrarSistema() {
+            sonar('audio-rechazo');
+            setTimeout(() => { window.location.href = "about:blank"; }, 2500); 
+        }
+
+        function pedirServicio() {
+            sonar('audio-aplausos');
+            const texto = `✅ *ACEPTO PROTEGER MI EQUIPO*\n\nHola, soy *${clienteNom}*, de *${clienteUbi}*. Acepto la protección de mi equipo con *Multiservicios Anato S.M.G.* ¿Cuándo podrían asistirme o cuándo sería mi primera cita? ❄️`;
+            const linkWa = `https://wa.me/${miTelefono}?text=${encodeURIComponent(texto)}`;
+            setTimeout(() => { window.location.href = linkWa; }, 2000);
+        }
+
+        function mostrarReferidos() {
+            document.getElementById('seccion-referidos').style.display = 'block';
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function enviarRecomendacion() {
+            const yo = document.getElementById('mi-nombre').value;
+            const tlfYo = document.getElementById('mi-whatsapp').value;
+            const amigo = document.getElementById('nombre-amigo').value;
+            const tlfAmigo = document.getElementById('tlf-amigo').value;
+
+            if(yo && tlfYo && amigo && tlfAmigo) {
+                // Formatear número del amigo para el link
+                let numLimpio = tlfAmigo.replace(/\D/g,'');
+                if (numLimpio.startsWith('0')) numLimpio = numLimpio.substring(1);
+                if (!numLimpio.startsWith('58')) numLimpio = '58' + numLimpio;
+
+                // Ficha para TI
+                const msgParaMi = `🚀 *NUEVO REFERIDO VIP*\n\n👤 *RECOMENDADOR:* ${yo} (${tlfYo})\n👉 *RECOMIENDA A:* ${amigo} (${tlfAmigo})\n\n💰 *Estado:* Descuento del 10% pendiente por primer servicio del amigo.`;
+                
+                // Mensaje de Gancho para el amigo
+                const msgParaAmigo = `¡Hola *${amigo}*! 👋 Te escribe *${yo}*. Ya hice mi servicio con *Anato S.M.G.* y te los recomiendo totalmente. 🛠️❄️ Aprovecha sus descuentos VIP. Mira tu invitación aquí: https://anatosmg.github.io/index.html?cliente=${encodeURIComponent(amigo)}`;
+
+                // 1. Te llega la ficha a ti
+                window.open(`https://wa.me/${miTelefono}?text=${encodeURIComponent(msgParaMi)}`, '_blank');
+                
+                // 2. Enviar invitación al amigo
+                setTimeout(() => {
+                    window.location.href = `https://wa.me/${numLimpio}?text=${encodeURIComponent(msgParaAmigo)}`;
+                }, 3000);
+            } else {
+                alert("Amo, por favor complete todos los datos para generar la recompensa.");
+            }
+        }
+    </script>
+</body>
+</html>
