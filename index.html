@@ -55,13 +55,14 @@
     <script>
         const miTelefono = "584164308731"; 
 
-        // Leer datos del enlace (Generador)
+        // --- AJUSTE DE ANCLAJE (Sincronizado con el Generador) ---
         const urlParams = new URLSearchParams(window.location.search);
-        const clienteNom = urlParams.get('cliente') || "Cliente VIP";
-        const clienteUbi = urlParams.get('lugar') || "Ubicación por definir";
+        // Buscamos 'cliente' o 'nombre', para que no falle
+        const clienteNom = urlParams.get('cliente') || urlParams.get('nombre') || "CLIENTE VIP";
+        const clienteUbi = urlParams.get('lugar') || urlParams.get('ubicacion') || "POR DEFINIR";
 
-        // Mostrar nombre del cliente en pantalla
-        if(clienteNom !== "Cliente VIP") {
+        // Mostrar nombre del cliente en pantalla (Saludo)
+        if(clienteNom !== "CLIENTE VIP") {
             document.getElementById('cliente-nombre').innerText = `HOLA, ${clienteNom.toUpperCase()}`;
         }
 
@@ -77,8 +78,18 @@
 
         function pedirServicio() {
             sonar('audio-aplausos');
-            const texto = `✅ *ACEPTO PROTEGER MI EQUIPO*\n\nHola, soy *${clienteNom}*, de *${clienteUbi}*. Acepto la protección de mi equipo con *Multiservicios Anato S.M.G.* ¿Cuándo podrían asistirme o cuándo sería mi primera cita? ❄️`;
-            const linkWa = `https://wa.me/${miTelefono}?text=${encodeURIComponent(texto)}`;
+
+            // --- CABECERA SIMÉTRICA Y MENSAJE CON TUS MAYÚSCULAS ---
+            const cabecera = `❄️❄️ *MULTISERVICIOS* ❄️❄️\n❄️❄️ *ANATO SMG* ❄️❄️\n\n`;
+            
+            const cuerpo = `✅ *ACEPTO PROTEGER MI EQUIPO*\n\n` +
+                           `Hola, soy *${clienteNom.toUpperCase()}*, de *${clienteUbi.toUpperCase()}*. ` +
+                           `Acepto la **P**rotección de mi **E**quipo con **Multiservicios Anato S.M.G.** ` +
+                           `¿Cuando **P**odrían **A**sistir me o **C**uando sería mi **P**rimera **CITA**? ❄️`;
+
+            const textoFinal = cabecera + cuerpo;
+            const linkWa = `https://wa.me/${miTelefono}?text=${encodeURIComponent(textoFinal)}`;
+            
             setTimeout(() => { window.location.href = linkWa; }, 2000);
         }
 
@@ -94,26 +105,19 @@
             const tlfAmigo = document.getElementById('tlf-amigo').value;
 
             if(yo && tlfYo && amigo && tlfAmigo) {
-                // Formatear número del amigo para el link
                 let numLimpio = tlfAmigo.replace(/\D/g,'');
                 if (numLimpio.startsWith('0')) numLimpio = numLimpio.substring(1);
                 if (!numLimpio.startsWith('58')) numLimpio = '58' + numLimpio;
 
-                // Ficha para TI
-                const msgParaMi = `🚀 *NUEVO REFERIDO VIP*\n\n👤 *RECOMENDADOR:* ${yo} (${tlfYo})\n👉 *RECOMIENDA A:* ${amigo} (${tlfAmigo})\n\n💰 *Estado:* Descuento del 10% pendiente por primer servicio del amigo.`;
-                
-                // Mensaje de Gancho para el amigo
-                const msgParaAmigo = `¡Hola *${amigo}*! 👋 Te escribe *${yo}*. Ya hice mi servicio con *Anato S.M.G.* y te los recomiendo totalmente. 🛠️❄️ Aprovecha sus descuentos VIP. Mira tu invitación aquí: https://anatosmg.github.io/index.html?cliente=${encodeURIComponent(amigo)}`;
+                const msgParaMi = `🚀 *NUEVO REFERIDO VIP*\n\n👤 *RECOMENDADOR:* ${yo} (${tlfYo})\n👉 *RECOMIENDA A:* ${amigo} (${tlfAmigo})\n\n💰 *Estado:* Descuento del 10% pendiente.`;
+                const msgParaAmigo = `¡Hola *${amigo}*! 👋 Te escribe *${yo}*. Ya hice mi servicio con *Anato S.M.G.* y te los recomiendo totalmente. 🛠️❄️ Aprovecha sus descuentos VIP. Mira tu invitación aquí: https://anatosmg-app.github.io/invitacionesencillas.html?cliente=${encodeURIComponent(amigo)}`;
 
-                // 1. Te llega la ficha a ti
                 window.open(`https://wa.me/${miTelefono}?text=${encodeURIComponent(msgParaMi)}`, '_blank');
-                
-                // 2. Enviar invitación al amigo
                 setTimeout(() => {
                     window.location.href = `https://wa.me/${numLimpio}?text=${encodeURIComponent(msgParaAmigo)}`;
                 }, 3000);
             } else {
-                alert("Amo, por favor complete todos los datos para generar la recompensa.");
+                alert("Por favor complete todos los datos.");
             }
         }
     </script>
