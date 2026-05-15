@@ -25,7 +25,7 @@
         #resultado { display: none; margin-top: 25px; background: #000; color: #fff; padding: 20px; border-radius: 15px; border: 3px solid var(--primary); box-shadow: 0 0 15px var(--primary); }
         .header-vip { text-align: center; font-weight: bold; border-bottom: 2px solid var(--primary); margin-bottom: 15px; color: var(--primary); font-size: 1.1rem; padding-bottom: 10px; }
         
-        /* CAJA DE SERVICIOS (ANTES CAPTURA) */
+        /* CAJA DE SERVICIOS */
         .service-display { background: var(--primary); color: black; padding: 12px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 1rem; text-transform: uppercase; margin-top: 15px; }
         
         .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; text-transform: uppercase; }
@@ -47,16 +47,22 @@
     </div>
 
     <div class="input-group">
-        <label>TELÉFONO WHATSAPP</label>
-        <div style="display:flex; gap:5px;">
-            <select id="op" style="width:100px;">
-                <option value="58412">0412</option><option value="58414">0414</option>
-                <option value="58424">0424</option><option value="58416">0416</option>
-                <option value="58426">0426</option><option value="1">+1 🇺🇸</option>
-            </select>
-            <input type="number" id="tel" placeholder="7654321">
-        </div>
+    <label>TELÉFONO WHATSAPP</label>
+    <div style="display:flex; gap:5px;">
+        <select id="op" style="width:100px;">
+            <option value="58412">0412</option>
+            <option value="58422">0422</option> <option value="58414">0414</option>
+            <option value="58424">0424</option>
+            <option value="58416">0416</option>
+            <option value="58426">0426</option>
+            <option value="1">+1 🇺🇸</option>
+            <option value="57">+57 🇨🇴</option>
+            <option value="51">+51 🇵🇪</option>
+            <option value="34">+34 🇪🇸</option>
+        </select>
+        <input type="number" id="tel" placeholder="7654321">
     </div>
+</div>
 
     <div class="input-group">
         <label>PRECIO Y CONVERSIÓN</label>
@@ -98,14 +104,13 @@
     <button class="btn-generar" onclick="prepararInvitacion()">GENERAR ORDEN</button>
 
     <div id="resultado">
-        <div class="header-vip">ORDEN DE SERVICIO TÉCNICO</div>
-        <p><strong>Titular:</strong> <span id="res-nom" style="color:var(--primary);"></span></p>
-        <p><strong>Ubicación:</strong> <span id="res-ubi"></span></p>
-        <p><strong>Inversión:</strong> <span id="res-pre" style="color:var(--primary);"></span></p>
-        <p><strong>Cita:</strong> <span id="res-cita-val" style="font-weight:bold; border-bottom: 1px solid #333;"></span></p>
+        <div class="header-vip">❄️ MULTISERVICIOS ANATO SMG ❄️<br>🔧 SERVICIO TÉCNICO 🔧</div>
+        <p><strong>👤 Titular:</strong> <span id="res-nom" style="color:var(--primary);"></span></p>
+        <p><strong>📍 Ubicación:</strong> <span id="res-ubi"></span></p>
+        <p><strong>💰 Inversión:</strong> <span id="res-pre" style="color:var(--primary);"></span></p>
+        <p><strong>📅 Cita:</strong> <span id="res-cita-val" style="font-weight:bold; border-bottom: 1px solid #333;"></span></p>
         
-        <div id="display-servicio" class="service-display">
-            </div>
+        <div id="display-servicio" class="service-display"></div>
     </div>
     
     <div id="wa-btn-container"></div>
@@ -143,6 +148,7 @@
     function prepararInvitacion() {
         const nom = document.getElementById('nombre').value.toUpperCase();
         const ubi = document.getElementById('ubicacion').value.toUpperCase();
+        const telNum = document.getElementById('tel').value;
         const pre = document.getElementById('precio').value;
         const serv = document.getElementById('cupos').value.toUpperCase();
         const enviarBs = document.getElementById('mostrarBs').checked;
@@ -151,7 +157,6 @@
         
         const montoBs = (pre * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
         
-        // Formatear Fecha
         let fFinal = "Hoy";
         if(manualCheck && manualDateValue) {
             const d = manualDateValue.split("-");
@@ -161,7 +166,6 @@
             fFinal = hoy.getDate() + "/" + (hoy.getMonth()+1) + "/" + hoy.getFullYear();
         }
 
-        // Llenar el Pase (Resultado)
         document.getElementById('res-nom').innerText = nom;
         document.getElementById('res-pre').innerText = pre + " USD";
         document.getElementById('res-ubi').innerText = ubi;
@@ -170,12 +174,17 @@
 
         document.getElementById('resultado').style.display = "block";
         
-        // Mensaje de WhatsApp
-        let msjWa = `❄️ *ANATO SMG - SERVICIO TÉCNICO*\n\nEstimado(a) *${nom}*, confirmamos su cita de *${serv}*.\n\n📅 *FECHA:* ${fFinal}\n📍 *UBICACIÓN:* ${ubi}\n💰 *PRESUPUESTO:* ${pre}$`;
+        // MENSAJE WHATSAPP CON SIMETRÍA TOTAL
+        let msjWa = `❄️ *MULTISERVICIOS ANATO SMG* ❄️\n-----------🔧 *SERVICIO TÉCNICO* 🔧-----------\n\nConfirmamos su cita de: *${serv}*\n\n`;
+        msjWa += `👤 *CLIENTE* 👤\n${nom}\n\n`;
+        if(telNum) msjWa += `📱 *TELÉFONO* 📱\n${document.getElementById('op').options[document.getElementById('op').selectedIndex].text} ${telNum}\n\n`;
+        msjWa += `📍 *UBICACIÓN* 📍\n${ubi}\n\n`;
+        msjWa += `📅 *FECHA* 📅\n${fFinal}\n\n`;
+        msjWa += `💰 *PRESUPUESTO* 💰\n${pre}$`;
         if(enviarBs) msjWa += ` (Bs. ${montoBs})`;
-        msjWa += `\n\n_Por favor, guarde esta orden para la visita técnica._ 🛠️`;
+        msjWa += `\n\n✅ _Por favor, guarde esta orden para la visita técnica._ ✅`;
 
-        const telFull = document.getElementById('op').value + document.getElementById('tel').value;
+        const telFull = document.getElementById('op').value + telNum;
         
         document.getElementById('wa-btn-container').innerHTML = `
             <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
