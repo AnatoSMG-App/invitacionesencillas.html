@@ -3,123 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anato SMG - Panel Full Equipo</title>
+    <title>S.M.G. - Gestor Elite 2026</title>
     <style>
-        :root { --verde: #ADFF2F; --fondo: #121212; --gris: #1e1e1e; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); color: white; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-        .form-container { width: 100%; max-width: 480px; background: var(--gris); padding: 15px; border-radius: 15px; border: 1px solid #444; margin-bottom: 20px; box-sizing: border-box; }
-        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        label { display: block; margin: 8px 0 3px; color: var(--verde); font-weight: bold; font-size: 0.8rem; }
-        input, select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #444; background: #000; color: var(--verde); font-size: 0.9rem; box-sizing: border-box; }
+        /* COLORES ACTUALIZADOS A VERDE NEÓN Y NEGRO */
+        :root { --primary: #ADFF2F; --accent: #ADFF2F; --text: #ffffff; --success: #25d366; --fondo: #121212; }
+        body { font-family: 'Segoe UI', sans-serif; background: #000; color: var(--text); padding: 15px; display: flex; justify-content: center; }
+        .container { background: var(--fondo); padding: 25px; border-radius: 20px; border: 2px solid var(--primary); width: 100%; max-width: 450px; box-shadow: 0 0 20px rgba(173,255,47,0.2); }
         
-        .card {
-            width: 100%; max-width: 400px; background: linear-gradient(145deg, #1a1a1a, #000);
-            border: 3px solid var(--verde); border-radius: 20px; padding: 20px; text-align: center;
-            box-shadow: 0 0 25px rgba(173, 255, 47, 0.2); box-sizing: border-box;
-        }
-        .info-row { text-align: left; margin: 8px 0; border-bottom: 1px solid #333; padding-bottom: 3px; }
-        .info-label { color: var(--verde); font-size: 0.65rem; text-transform: uppercase; }
-        .info-value { font-size: 1rem; color: #fff; display: block; font-weight: bold; }
+        h2 { color: var(--primary); text-align: center; font-size: 1.3rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; text-shadow: 0 0 10px rgba(173,255,47,0.5); }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.8rem; color: var(--primary); margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
+        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: white; box-sizing: border-box; font-size: 1rem; }
         
-        .price-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .price-box { background: #222; padding: 10px; border-radius: 10px; border: 1px solid var(--verde); }
-        .service-box { background: var(--verde); color: black; padding: 10px; border-radius: 10px; margin-top: 15px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; }
-        .btn { width: 100%; max-width: 480px; padding: 15px; background: var(--verde); color: black; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .bcv-status { background: rgba(173,255,47,0.1); padding: 10px; border-radius: 10px; text-align: center; margin-bottom: 15px; font-weight: bold; border: 1px solid var(--primary); color: var(--primary); }
+        .row-flex { display: flex; align-items: center; gap: 10px; background: #1a1a1a; padding: 10px; border-radius: 10px; border: 1px solid #333; }
+        .bs-info { flex-grow: 1; font-size: 0.8rem; color: #aaa; text-align: right; }
+        
+        .btn-generar { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: black; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 10px; text-transform: uppercase; }
+        
+        /* EL PASE - AHORA EN NEGRO Y VERDE */
+        #resultado { display: none; margin-top: 25px; background: #000; color: #fff; padding: 20px; border-radius: 15px; border: 3px solid var(--primary); box-shadow: 0 0 15px var(--primary); }
+        .header-vip { text-align: center; font-weight: bold; border-bottom: 2px solid var(--primary); margin-bottom: 15px; color: var(--primary); font-size: 1.1rem; padding-bottom: 10px; }
+        
+        /* CAJA DE SERVICIOS (ANTES CAPTURA) */
+        .service-display { background: var(--primary); color: black; padding: 12px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 1rem; text-transform: uppercase; margin-top: 15px; }
+        
+        .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; text-transform: uppercase; }
+        #fechaManualContainer { display: none; margin-top: 5px; }
+        option { background: #1a1a1a; color: white; }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <h2 style="color:var(--verde); text-align:center; margin:0 0 10px; font-size:1.1rem;">DATOS DEL SERVICIO</h2>
+<div class="container">
+    <h2>MULTISERVICIOS ANATO S.M.G.</h2>
     
-    <div class="grid-inputs">
-        <div><label>NOMBRE:</label><input type="text" id="inNombre" oninput="generar()"></div>
-        <div><label>APELLIDO:</label><input type="text" id="inApellido" oninput="generar()"></div>
+    <div class="bcv-status" id="bcv-box">🔄 Conectando al BCV...</div>
+
+    <div class="input-group">
+        <label>CLIENTE Y UBICACIÓN</label>
+        <input type="text" id="nombre" placeholder="Nombre del Cliente">
+        <input type="text" id="ubicacion" placeholder="Dirección / Sector" style="margin-top:5px;">
     </div>
 
-    <div class="grid-inputs">
-        <div><label>TELÉFONO:</label><input type="text" id="inTel" placeholder="04XX..." oninput="generar()"></div>
-        <div><label>FECHA:</label><input type="date" id="inFecha" oninput="generar()"></div>
+    <div class="input-group">
+        <label>TELÉFONO WHATSAPP</label>
+        <div style="display:flex; gap:5px;">
+            <select id="op" style="width:100px;">
+                <option value="58412">0412</option><option value="58414">0414</option>
+                <option value="58424">0424</option><option value="58416">0416</option>
+                <option value="58426">0426</option><option value="1">+1 🇺🇸</option>
+            </select>
+            <input type="number" id="tel" placeholder="7654321">
+        </div>
     </div>
 
-    <label>LUGAR / DIRECCIÓN:</label>
-    <input type="text" id="inLugar" placeholder="Ej: Los Guayos" oninput="generar()">
-
-    <label>SERVICIO:</label>
-    <select id="inServicio" onchange="generar()">
-        <option value="REVISIÓN Y CHEQUEO">REVISIÓN Y CHEQUEO</option>
-        <option value="MANTENIMIENTO PREVENTIVO">MANTENIMIENTO PREVENTIVO</option>
-        <option value="REPARACIÓN TÉCNICA">REPARACIÓN TÉCNICA</option>
-        <option value="INSTALACIÓN DE EQUIPO">INSTALACIÓN DE EQUIPO</option>
-        <option value="CARGA DE GAS">CARGA DE GAS</option>
-    </select>
-
-    <div class="grid-inputs" style="margin-top:10px; background:#222; padding:10px; border-radius:10px;">
-        <div><label>TASA BCV (Bs):</label><input type="number" id="inTasa" value="36.50" step="0.01" oninput="generar()"></div>
-        <div><label>MONTO ($):</label><input type="number" id="inDolar" placeholder="0.00" oninput="generar()"></div>
+    <div class="input-group">
+        <label>PRECIO Y CONVERSIÓN</label>
+        <div class="row-flex">
+            <input type="number" id="precio" placeholder="30" oninput="actualizarBs()" style="width:80px; text-align:center;">
+            <span style="color:var(--primary); font-weight:bold;">$</span>
+            <div class="bs-info">
+                <div id="bs-calc" style="color:white; font-weight:bold;">Bs. 0.00</div>
+                <label style="font-size:0.7rem; color:var(--primary);">
+                    <input type="checkbox" id="mostrarBs" style="width:12px; height:12px;"> Enviar Bs.
+                </label>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="card" id="pase">
-    <h2 style="color:var(--verde); font-size:1.1rem; margin:0 0 15px;">MULTISERVICIO ANATO SMG</h2>
+    <div class="input-group">
+        <label>FECHA DE CITA</label>
+        <div class="row-flex">
+            <div style="flex-grow:1; font-size:0.8rem;" id="fechaTexto">Automática: Hoy</div>
+            <label style="font-size:0.7rem; color:var(--primary); cursor:pointer;">
+                <input type="checkbox" id="activarFechaManual" onchange="toggleFechaManual()" style="width:12px; height:12px;"> Manual
+            </label>
+        </div>
+        <div id="fechaManualContainer">
+            <input type="date" id="fechaManualInput">
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>SERVICIO A REALIZAR</label>
+        <select id="cupos">
+            <option value="MANTENIMIENTO">Mantenimiento</option>
+            <option value="REPARACIÓN TÉCNICA">Reparación</option>
+            <option value="INSTALACIÓN DE EQUIPO">Instalación</option>
+            <option value="REVISIÓN Y CHEQUEO">Revisión y Chequeo</option>
+        </select>
+    </div>
+
+    <button class="btn-generar" onclick="prepararInvitacion()">GENERAR ORDEN</button>
+
+    <div id="resultado">
+        <div class="header-vip">ORDEN DE SERVICIO TÉCNICO</div>
+        <p><strong>Titular:</strong> <span id="res-nom" style="color:var(--primary);"></span></p>
+        <p><strong>Ubicación:</strong> <span id="res-ubi"></span></p>
+        <p><strong>Inversión:</strong> <span id="res-pre" style="color:var(--primary);"></span></p>
+        <p><strong>Cita:</strong> <span id="res-cita-val" style="font-weight:bold; border-bottom: 1px solid #333;"></span></p>
+        
+        <div id="display-servicio" class="service-display">
+            </div>
+    </div>
     
-    <div class="info-row">
-        <span class="info-label">Cliente:</span>
-        <span class="info-value" id="outNombre">---</span>
-    </div>
-
-    <div class="grid-inputs">
-        <div class="info-row"><span class="info-label">Teléfono:</span><span id="outTel" class="info-value">---</span></div>
-        <div class="info-row"><span class="info-label">Fecha:</span><span id="outFecha" class="info-value">--/--/--</span></div>
-    </div>
-
-    <div class="info-row"><span class="info-label">Lugar:</span><span id="outLugar" class="info-value">---</span></div>
-
-    <div class="price-container">
-        <div class="price-box"><span class="info-label">Total $:</span><span id="outDolar" class="info-value">0.00</span></div>
-        <div class="price-box"><span class="info-label">Total Bs:</span><span id="outBs" class="info-value">0.00</span></div>
-    </div>
-
-    <div class="service-box" id="outServicio">REVISIÓN Y CHEQUEO</div>
+    <div id="wa-btn-container"></div>
 </div>
-
-<button class="btn" onclick="compartir()">📲 ENVIAR ORDEN COMPLETA</button>
 
 <script>
-    function generar() {
-        const nom = document.getElementById('inNombre').value.toUpperCase();
-        const ape = document.getElementById('inApellido').value.toUpperCase();
-        const tel = document.getElementById('inTel').value;
-        const lugar = document.getElementById('inLugar').value.toUpperCase();
-        const fechaRaw = document.getElementById('inFecha').value;
-        const servicio = document.getElementById('inServicio').value;
-        const tasa = parseFloat(document.getElementById('inTasa').value) || 0;
-        const montoDolar = parseFloat(document.getElementById('inDolar').value) || 0;
+    let tasa = 0;
 
-        let fFormated = "--/--/--";
-        if(fechaRaw) { const d = fechaRaw.split("-"); fFormated = d[2]+"/"+d[1]+"/"+d[0]; }
-
-        document.getElementById('outNombre').innerText = nom + " " + ape;
-        document.getElementById('outTel').innerText = tel || "---";
-        document.getElementById('outFecha').innerText = fFormated;
-        document.getElementById('outLugar').innerText = lugar || "---";
-        document.getElementById('outServicio').innerText = servicio;
-        document.getElementById('outDolar').innerText = montoDolar.toFixed(2);
-        document.getElementById('outBs').innerText = (montoDolar * tasa).toFixed(2);
+    async function obtenerTasa() {
+        try {
+            const r = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+            const d = await r.json();
+            tasa = d.promedio;
+            document.getElementById('bcv-box').innerText = `Tasa BCV: Bs. ${tasa.toFixed(2)}`;
+        } catch(e) {
+            tasa = prompt("No pude conectar al BCV. ¿A cuánto está el dólar hoy?");
+            document.getElementById('bcv-box').innerText = `Tasa Manual: Bs. ${tasa}`;
+        }
     }
 
-    function compartir() {
-        const cliente = document.getElementById('outNombre').innerText;
-        const tel = document.getElementById('outTel').innerText;
-        const fecha = document.getElementById('outFecha').innerText;
-        const lugar = document.getElementById('outLugar').innerText;
-        const serv = document.getElementById('outServicio').innerText;
-        const usd = document.getElementById('outDolar').innerText;
-        const bs = document.getElementById('outBs').innerText;
-
-        const msg = encodeURIComponent("❄️ *ANATO SMG - ORDEN TÉCNICA* 🛠️\\n\\n👤 *CLIENTE:* " + cliente + "\\n📞 *TEL:* " + tel + "\\n📍 *LUGAR:* " + lugar + "\\n📅 *FECHA:* " + fecha + "\\n🛠️ *SERVICIO:* " + serv + "\\n\\n💰 *PRESUPUESTO:*\\n💵 USD: $" + usd + "\\n💸 Bs: " + bs + "\\n\\n*¡Servicio profesional garantizado!*");
-        window.open("https://wa.me/?text=" + msg);
+    function toggleFechaManual() {
+        const check = document.getElementById('activarFechaManual').checked;
+        const container = document.getElementById('fechaManualContainer');
+        const txt = document.getElementById('fechaTexto');
+        container.style.display = check ? "block" : "none";
+        txt.innerText = check ? "Seleccione día:" : "Automática: Hoy";
     }
+
+    function actualizarBs() {
+        const p = document.getElementById('precio').value;
+        const total = (p * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
+        document.getElementById('bs-calc').innerText = `Bs. ${total}`;
+    }
+
+    function prepararInvitacion() {
+        const nom = document.getElementById('nombre').value.toUpperCase();
+        const ubi = document.getElementById('ubicacion').value.toUpperCase();
+        const pre = document.getElementById('precio').value;
+        const serv = document.getElementById('cupos').value.toUpperCase();
+        const enviarBs = document.getElementById('mostrarBs').checked;
+        const manualCheck = document.getElementById('activarFechaManual').checked;
+        const manualDateValue = document.getElementById('fechaManualInput').value;
+        
+        const montoBs = (pre * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
+        
+        // Formatear Fecha
+        let fFinal = "Hoy";
+        if(manualCheck && manualDateValue) {
+            const d = manualDateValue.split("-");
+            fFinal = d[2] + "/" + d[1] + "/" + d[0];
+        } else if (!manualCheck) {
+            const hoy = new Date();
+            fFinal = hoy.getDate() + "/" + (hoy.getMonth()+1) + "/" + hoy.getFullYear();
+        }
+
+        // Llenar el Pase (Resultado)
+        document.getElementById('res-nom').innerText = nom;
+        document.getElementById('res-pre').innerText = pre + " USD";
+        document.getElementById('res-ubi').innerText = ubi;
+        document.getElementById('res-cita-val').innerText = fFinal;
+        document.getElementById('display-servicio').innerText = serv;
+
+        document.getElementById('resultado').style.display = "block";
+        
+        // Mensaje de WhatsApp
+        let msjWa = `❄️ *ANATO SMG - SERVICIO TÉCNICO*\n\nEstimado(a) *${nom}*, confirmamos su cita de *${serv}*.\n\n📅 *FECHA:* ${fFinal}\n📍 *UBICACIÓN:* ${ubi}\n💰 *PRESUPUESTO:* ${pre}$`;
+        if(enviarBs) msjWa += ` (Bs. ${montoBs})`;
+        msjWa += `\n\n_Por favor, guarde esta orden para la visita técnica._ 🛠️`;
+
+        const telFull = document.getElementById('op').value + document.getElementById('tel').value;
+        
+        document.getElementById('wa-btn-container').innerHTML = `
+            <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
+                ENVIAR POR WHATSAPP
+            </button>
+        `;
+    }
+
+    obtenerTasa();
 </script>
 </body>
 </html>
