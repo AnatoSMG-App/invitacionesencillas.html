@@ -177,29 +177,22 @@
        // MENSAJE WHATSAPP CON SIMETRÍA TOTAL Y ORDEN LÓGICO
     let msjWa = `❄️ *MULTISERVICIOS ANATO❄️❄️❄️SMG* ❄️❄️❄️\n`;
     msjWa += `🔧 *SERVICIO TÉCNICO* 🔧\n\n`;
-    
     // 1. Datos del Cliente
     msjWa += `👤👤 *CLIENTE* 👤👤\n${nom}\n\n`;
-    
     // 2. Teléfono
     if(telNum) {
         const codActual = document.getElementById('op').options[document.getElementById('op').selectedIndex].text;
         msjWa += `📱📱 *TELÉFONO* 📱📱\n${codActual} ${telNum}\n\n`;
     }
-    
     // 3. Ubicación
     msjWa += `📍📍 *UBICACIÓN* 📍📍\n${ubi}\n\n`;
-    
     // 4. Fecha
     msjWa += `📅📅 *FECHA* 📅📅\n${fFinal}\n\n`;
-    
     // 5. Servicio (Confirmación de cita)
     msjWa += `🔧🔧 *SERVICIO  🔧🔧\n*${serv}*\n\n`;
-    
     // 6. Presupuesto
     msjWa += `💰💰 *PRESUPUESTO* 💰💰\n${pre}$`;
     if(enviarBs) msjWa += ` (Bs. ${montoBs})`;
-    
     // 7. Cierre con Check Verde
     msjWa += `\n\n✅✅ *¡ORDEN CONFIRMADA!* ✅✅\n`;
     msjWa += `_Por favor, guarde esta orden para la visita técnica._`;
