@@ -196,21 +196,11 @@ msjWa += `📅📅 *CITA* 📅📅\n${fFinal}\n`;
 msjWa += `🔧🔧 *SERVICIOS* 🔧🔧\n*${serv}*\n`;
 
 // 6. Presupuesto (Cierre del trato pegadito)
-msjWa += `💰💰 *PRESUPUESTO* 💰💰\n*${pre}$*`;
+msjWa += `💰 *PRESUPUESTO* 💰\n*${pre}$*`;
 if(enviarBs) msjWa += ` *(Bs. ${montoBs})*`;
 
 // 7. Cierre Maestro con Check Verde ✅ (Uno solo, sin repeticiones)
 msjWa += `\n\n✅✅ *ORDEN CONFIRMADA* ✅✅\n`;
-msjWa += `_Por favor, guarde esta orden para su visita técnica._`;
-    
-    // 7. Cierre con Check Verde
-    msjWa += `\n\n✅✅ *¡ORDEN CONFIRMADA!* ✅✅\n_Por favor, guarde esta orden para su visita técnica._`;
-
-    // 7. Cierre con Check Verde
-    msjWa += `\n\n✅✅ *ORDEN CONFIRMADA* ✅✅\n`;
-    msjWa += `_Por favor, guarde esta orden para su visita técnica._ ✅`;
-    msjWa += `\n\n✅✅ *¡ORDEN CONFIRMADA!* ✅✅\n`;
-    msjWa += `_Por favor, guarde esta orden para la visita técnica._`;
 
     const telFull = document.getElementById('op').value + telNum;
     
