@@ -32,7 +32,6 @@
     <h2>MULTISERVICIOS ANATO S.M.G.</h2>
     <div class="bcv-status" id="bcv-box">🔄 Conectando al BCV...</div>
 
-    <!-- BOTÓN DE INVITACIÓN (PASO 1) -->
     <button class="btn-invitar" onclick="enviarInvitacion()">📩 ENVIAR INVITACIÓN AL INDEX 📩</button>
     <hr style="border: 1px solid #333; margin: 20px 0;">
 
@@ -123,7 +122,8 @@
 
 <script>
     let tasa = 0;
-    const LINK_INDEX = "https://anatosmg-app.github.io/invitacionesencillas.html/";
+    // URL del Index sin la barra final para evitar errores
+    const LINK_INDEX = "https://anatosmg-app.github.io/invitacionesencillas.html";
 
     async function obtenerTasa() {
         try {
@@ -149,25 +149,22 @@
         document.getElementById('bs-calc').innerText = `Bs. ${total}`;
     }
 
+    // --- FUNCIÓN DE INVITACIÓN MEJORADA (ANCLAJE) ---
     function enviarInvitacion() {
-        const nom = document.getElementById('nombre').value.toUpperCase() || "CLIENTE";
+        const nom = document.getElementById('nombre').value.trim().toUpperCase() || "CLIENTE";
+        const ubi = document.getElementById('ubicacion').value.trim().toUpperCase() || "LOCALIDAD";
         const telNum = document.getElementById('tel').value;
         const opSelect = document.getElementById('op');
-        const codActual = opSelect.options[opSelect.selectedIndex].text;
         const telFull = opSelect.value + telNum;
 
         if(!telNum) return alert("¡Falta el número de teléfono para enviar la invitación!");
 
-        let msj = `❄️ *MULTISERVICIOS ANATO SMG* ❄️
+        // El Link con los parámetros de anclaje (?n=NOMBRE&l=LOCALIDAD)
+        const linkConAnclaje = `${LINK_INDEX}?n=${encodeURIComponent(nom)}&l=${encodeURIComponent(ubi)}`;
 
-`;
-        msj += `¡Hola *${nom}*! Te escribimos de nuestro departamento técnico. Tenemos una invitación especial y beneficios exclusivos para ti en servicios de refrigeración y electrónica.
-
-`;
-        msj += `🎁 *MIRA TU INVITACIÓN AQUÍ:* 
-${LINK_INDEX}
-
-`;
+        let msj = `❄️ *MULTISERVICIOS* ❄️\n❄️ *ANATO SMG* ❄️\n\n`;
+        msj += `¡Hola *${nom}*! Te Escribimos desde Nuestro Departamento Técnico. Tenemos una Invitación Especial y Beneficios Exclusivos para ti en Nuestros Múltiples Servicios.\n\n`;
+        msj += `🎁 *MIRA TU INVITACIÓN AQUÍ:* \n${linkConAnclaje}\n\n`;
         msj += `✅ _Toca el enlace azul para activar tus beneficios._`;
 
         window.open(`https://wa.me/${telFull}?text=${encodeURIComponent(msj)}`);
@@ -183,7 +180,6 @@ ${LINK_INDEX}
         const codActual = opSelect.options[opSelect.selectedIndex].text;
         const telFull = opSelect.value + telNum;
 
-        // Lógica de Bloqueos (Tildes)
         const bUbi = document.getElementById('lockUbi').checked;
         const bPre = document.getElementById('lockPre').checked;
         const bCita = document.getElementById('lockCita').checked;
@@ -200,38 +196,22 @@ ${LINK_INDEX}
             fFinal = hoy.getDate() + "/" + (hoy.getMonth()+1) + "/" + hoy.getFullYear();
         }
 
-        let msjWa = `❄️ *MULTISERVICIOS* ❄️
-❄️ *ANATO SMG* ❄️
-
-`;
-        msjWa += `👤👤 *CLIENTE* 👤👤
-${nom}
-`;
+        let msjWa = `❄️ *MULTISERVICIOS* ❄️\n❄️ *ANATO SMG* ❄️\n\n`;
+        msjWa += `👤👤 *CLIENTE* 👤👤\n${nom}\n`;
         
-        if(telNum) msjWa += `📱📱 *TELÉFONO* 📱📱
-${codActual} ${telNum}
-`;
-        if(!bUbi) msjWa += `📍📍 *UBICACIÓN* 📍📍
-${ubi}
-`;
-        if(!bCita) msjWa += `📅📅 *CITA* 📅📅
-${fFinal}
-`;
-        if(!bServ) msjWa += `🔧🔧 *SERVICIOS* 🔧🔧
-*${serv}*
-`;
+        if(telNum) msjWa += `📱📱 *TELÉFONO* 📱📱\n${codActual} ${telNum}\n`;
+        if(!bUbi) msjWa += `📍📍 *UBICACIÓN* 📍📍\n${ubi}\n`;
+        if(!bCita) msjWa += `📅📅 *CITA* 📅📅\n${fFinal}\n`;
+        if(!bServ) msjWa += `🔧🔧 *SERVICIOS* 🔧🔧\n*${serv}*\n`;
         
         if(!bPre) {
             const montoBs = (pre * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
-            msjWa += `💰 *PRESUPUESTO* 💰
-*${pre}$*`;
+            msjWa += `💰 *PRESUPUESTO* 💰\n*${pre}$*`;
             if(document.getElementById('mostrarBs').checked) msjWa += ` *(Bs. ${montoBs})*`;
-            msjWa += `
-`;
+            msjWa += `\n`;
         }
 
-        msjWa += `
-✅✅ *¡ORDEN CONFIRMADA!* ✅✅`;
+        msjWa += `\n✅✅ *¡ORDEN CONFIRMADA!* ✅✅`;
 
         document.getElementById('res-nom').innerText = nom;
         document.getElementById('res-ubi').innerText = bUbi ? "BLOQUEADO" : ubi;
