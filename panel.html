@@ -173,27 +173,35 @@
         document.getElementById('display-servicio').innerText = serv;
 
         document.getElementById('resultado').style.display = "block";
-        
-       // MENSAJE WHATSAPP CON SIMETRÍA TOTAL Y ORDEN LÓGICO
+  // MENSAJE WHATSAPP COMPACTO Y SIMÉTRICO
     let msjWa = `❄️ *MULTISERVICIOS ANATO❄️❄️❄️SMG* ❄️❄️❄️\n`;
     msjWa += `🔧 *SERVICIO TÉCNICO* 🔧\n\n`;
+
     // 1. Datos del Cliente
-    msjWa += `👤👤 *CLIENTE* 👤👤\n${nom}\n\n`;
+    msjWa += `👤👤 *CLIENTE* 👤👤\n${nom}\n`;
+
     // 2. Teléfono
     if(telNum) {
         const codActual = document.getElementById('op').options[document.getElementById('op').selectedIndex].text;
-        msjWa += `📱📱 *TELÉFONO* 📱📱\n${codActual} ${telNum}\n\n`;
+        msjWa += `📱📱 *TELÉFONO* 📱📱\n${codActual} ${telNum}\n`;
     }
+
     // 3. Ubicación
-    msjWa += `📍📍 *UBICACIÓN* 📍📍\n${ubi}\n\n`;
+    msjWa += `📍📍 *UBICACIÓN* 📍📍\n${ubi}\n`;
+
     // 4. Fecha
-    msjWa += `📅📅 *FECHA* 📅📅\n${fFinal}\n\n`;
-    // 5. Servicio (Confirmación de cita)
-    msjWa += `🔧🔧 *SERVICIO  🔧🔧\n*${serv}*\n\n`;
+    msjWa += `📅📅 *FECHA* 📅📅\n${fFinal}\n`;
+
+    // 5. Servicio
+    msjWa += `🔧🔧 *SERVICIO* 🔧🔧\n*${serv}*\n`;
+
     // 6. Presupuesto
     msjWa += `💰💰 *PRESUPUESTO* 💰💰\n${pre}$`;
     if(enviarBs) msjWa += ` (Bs. ${montoBs})`;
+
     // 7. Cierre con Check Verde
+    msjWa += `\n\n✅✅ *ORDEN CONFIRMADA* ✅✅\n`;
+    msjWa += `_Por favor, guarde esta orden para su visita técnica._ ✅`;
     msjWa += `\n\n✅✅ *¡ORDEN CONFIRMADA!* ✅✅\n`;
     msjWa += `_Por favor, guarde esta orden para la visita técnica._`;
 
