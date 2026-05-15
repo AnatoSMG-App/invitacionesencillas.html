@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.M.G. - Gestor VIP Elite 2026</title>
+    <style>
+        :root { --primary: #003366; --accent: #00aaff; --text: #ffffff; --success: #25d366; }
+        body { font-family: 'Arial', sans-serif; background: #050505; color: var(--text); padding: 20px; display: flex; justify-content: center; }
+        .container { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--primary); width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { color: var(--accent); text-align: center; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.8rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: white; box-sizing: border-box; font-size: 1rem; }
+        .bcv-status { background: rgba(0,170,255,0.1); padding: 10px; border-radius: 10px; text-align: center; margin-bottom: 15px; font-weight: bold; border: 1px solid var(--primary); }
+        .row-flex { display: flex; align-items: center; gap: 10px; background: #1a1a1a; padding: 10px; border-radius: 10px; border: 1px solid #333; }
+        .bs-info { flex-grow: 1; font-size: 0.8rem; color: #aaa; text-align: right; }
+        .checkbox-group { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; color: var(--accent); cursor: pointer; }
+        .btn-generar { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-generar:hover { background: var(--accent); transform: translateY(-2px); }
+        #resultado { display: none; margin-top: 25px; background: #fff; color: #000; padding: 20px; border-radius: 15px; border: 4px solid var(--primary); }
+        .header-vip { text-align: center; font-weight: bold; border-bottom: 2px solid #003366; margin-bottom: 10px; text-transform: uppercase; }
+        .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        #fechaManualContainer { display: none; margin-top: 5px; }
+        option { background: #1a1a1a; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>MULTISERVICIOS ANATO S.M.G. 2026</h2>
+    
+    <div class="bcv-status" id="bcv-box">🔄 Conectando al BCV...</div>
+
+    <div class="input-group">
+        <label>CLIENTE Y UBICACIÓN</label>
+        <input type="text" id="nombre" placeholder="Nombre del Cliente">
+        <input type="text" id="ubicacion" placeholder="Ubicación (Ej: Sector 3, Los Guayos)" style="margin-top:5px;">
+    </div>
+
+    <div class="input-group">
+        <label>TELÉFONO WHATSAPP</label>
+        <div style="display:flex; gap:5px;">
+            <select id="op" style="width:100px;">
+                <option value="58412">0412</option>
+                <option value="58414">0414</option>
+                <option value="58424">0424</option>
+                <option value="58416">0416</option>
+                <option value="58426">0426</option>
+                <option value="1">🇺🇸 +1</option>
+                <option value="57">🇨🇴 +57</option>
+                <option value="51">🇵🇪 +51</option>
+                <option value="507">🇵🇦 +507</option>
+                <option value="56">🇨🇱 +56</option>
+                <option value="34">🇪🇸 +34</option>
+            </select>
+            <input type="number" id="tel" placeholder="7654321">
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>PRECIO Y CONVERSIÓN</label>
+        <div class="row-flex">
+            <input type="number" id="precio" placeholder="30" oninput="actualizarBs()" style="width:80px; text-align:center;">
+            <span style="color:var(--accent); font-weight:bold;">$</span>
+            <div class="bs-info">
+                <div id="bs-calc">Bs. 0.00</div>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="mostrarBs" style="width:15px; height:15px;"> ¿Enviar Bs.?
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>FECHA DE INICIO</label>
+        <div class="row-flex">
+            <div style="flex-grow:1; font-size:0.8rem;" id="fechaTexto">Fecha: Hoy (Auto)</div>
+            <label class="checkbox-group">
+                <input type="checkbox" id="activarFechaManual" onchange="toggleFechaManual()" style="width:15px; height:15px;"> ¿Manual?
+            </label>
+            <label class="checkbox-group">
+                <input type="checkbox" id="bloquearFecha" style="width:15px; height:15px;" checked> ¿Bloquear?
+            </label>
+        </div>
+        <div id="fechaManualContainer">
+            <input type="date" id="fechaManualInput">
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>SERVICIOS</label>
+        <div class="row-flex">
+            <select id="cupos">
+                <option value="Mantenimiento">Mantenimiento</option>
+                <option value="Reparación">Reparación</option>
+                <option value="Instalación">Instalación</option>
+                <option value="Revisión y Chequeo">Revisión y Chequeo</option>
+            </select>
+            <label class="checkbox-group">
+                <input type="checkbox" id="bloquearServicio" style="width:15px; height:15px;" checked> ¿Bloquear?
+            </label>
+        </div>
+    </div>
+
+    <button class="btn-generar" onclick="prepararInvitacion()">GENERAR PASE</button>
+
+    <div id="resultado">
+        <div class="header-vip">MULTISERVICIOS ANATO S.M.G. - </div>
+        <p><strong>Titular:</strong> <span id="res-nom"></span></p>
+        <p><strong>Ubicacion:</strong> <span id="res-ubi"></span></p>
+        <p><strong>Precio Protegido:</strong> <span id="res-pre"></span></p>
+        <p><strong>Cita:</strong></p>
+        <ul id="res-citas" style="font-weight: bold; color: #003366;"></ul>
+        <div style="background:#ffcc00; padding:10px; border-radius:10px; text-align:center; font-weight:bold; border: 2px dashed #000;">
+            📸 TOMA CAPTURA DE PANTALLA
+        </div>
+    </div>
+    
+    <div id="wa-btn-container"></div>
+</div>
+
+<script>
+    let tasa = 0;
+
+    async function obtenerTasa() {
+        try {
+            const r = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+            const d = await r.json();
+            tasa = d.promedio;
+            document.getElementById('bcv-box').innerText = `Tasa BCV: Bs. ${tasa.toFixed(2)}`;
+        } catch(e) {
+            tasa = prompt("No pude conectar al BCV. ¿A cuánto está el dólar hoy?");
+            document.getElementById('bcv-box').innerText = `Tasa Manual: Bs. ${tasa}`;
+        }
+    }
+
+    function toggleFechaManual() {
+        const check = document.getElementById('activarFechaManual').checked;
+        const container = document.getElementById('fechaManualContainer');
+        const txt = document.getElementById('fechaTexto');
+        container.style.display = check ? "block" : "none";
+        txt.innerText = check ? "Seleccione día:" : "Fecha: Hoy (Auto)";
+    }
+
+    function actualizarBs() {
+        const p = document.getElementById('precio').value;
+        const total = (p * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
+        document.getElementById('bs-calc').innerText = `Bs. ${total}`;
+    }
+
+    function prepararInvitacion() {
+        const nom = document.getElementById('nombre').value;
+        const ubi = document.getElementById('ubicacion').value;
+        const pre = document.getElementById('precio').value;
+        const serv = document.getElementById('cupos').value;
+        const enviarBs = document.getElementById('mostrarBs').checked;
+        const bloqFecha = document.getElementById('bloquearFecha').checked;
+        const bloqServ = document.getElementById('bloquearServicio').checked;
+        const manualCheck = document.getElementById('activarFechaManual').checked;
+        const manualDateValue = document.getElementById('fechaManualInput').value;
+        
+        const montoBs = (pre * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
+        
+        document.getElementById('res-nom').innerText = nom;
+        document.getElementById('res-pre').innerText = pre + " USD";
+        document.getElementById('res-ubi').innerText = ubi;
+
+        const listaUI = document.getElementById('res-citas');
+        listaUI.innerHTML = "";
+
+        // --- DIRECCIÓN CORREGIDA DEL REPOSITORIO ---
+        const baseLink = "https://anatosmg-app.github.io/invitacionesencillas.html/"; 
+        const linkIndex = `${baseLink}?cliente=${encodeURIComponent(nom)}&precio=${encodeURIComponent(pre)}&lugar=${encodeURIComponent(ubi)}&servicio=${encodeURIComponent(serv)}`;
+
+        // Lógica de Mensaje
+        let msjWa = "";
+        if (bloqFecha && bloqServ) {
+            msjWa = `🛠️ *PASE VIP: ANATO S.M.G.*\n\nHola *${nom}*, te invitamos a proteger tu equipo con nosotros. Haz clic para ver tu invitación personalizada:\n\n👉 ${linkIndex}`;
+        } else {
+            let fFinal = bloqFecha ? "Por definir" : (manualCheck ? manualDateValue : "Hoy");
+            msjWa = `🛠️ *PASE DE SERVICIO CONFIRMADO*\n\nEstimado *${nom}*, confirmamos su *${serv}* para el día *${fFinal}*.\n\n💰 *Inversión:* ${pre}$`;
+            if(enviarBs) msjWa += ` (Bs. ${montoBs})`;
+            msjWa += `\n📍 *Ubicación:* ${ubi}\n\nGestione su pase aquí:\n👉 ${linkIndex}`;
+            listaUI.innerHTML = `<li>${serv}: ${fFinal}</li>`;
+        }
+
+        document.getElementById('resultado').style.display = "block";
+        
+        const telFull = document.getElementById('op').value + document.getElementById('tel').value;
+        
+        document.getElementById('wa-btn-container').innerHTML = `
+            <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
+                ENVIAR POR WHATSAPP
+            </button>
+        `;
+    }
+
+    obtenerTasa();
+</script>
+
+</body>
+</html>
