@@ -55,12 +55,13 @@
     <script>
         const miTelefono = "584164308731"; 
 
-        // --- ANCLAJE MAESTRO (Captura todo tipo de variables) ---
+        // --- ANCLAJE MAESTRO CORREGIDO ---
         const urlParams = new URLSearchParams(window.location.search);
-        const clienteNom = urlParams.get('cliente') || urlParams.get('nombre') || "CLIENTE";
-        const clienteUbi = urlParams.get('lugar') || urlParams.get('ubicacion') || "LOCALIDAD";
+        // Ahora acepta 'cliente', 'nombre' o 'nombreCliente' para asegurar el anclaje
+        const clienteNom = urlParams.get('cliente') || urlParams.get('nombre') || urlParams.get('nombreCliente') || "CLIENTE";
+        const clienteUbi = urlParams.get('lugar') || urlParams.get('ubicacion') || urlParams.get('lugarUbicacion') || "LOCALIDAD";
 
-        // Mostrar saludo dinámico
+        // Mostrar saludo dinámico en pantalla
         document.getElementById('cliente-nombre').innerText = `HOLA, ${clienteNom.toUpperCase()}`;
 
         function sonar(id) { 
@@ -79,15 +80,16 @@
             // --- DISEÑO SIMÉTRICO Y MAYÚSCULAS PROFESIONALES ---
             const cabecera = `❄️ *MULTISERVICIOS* ❄️\n❄️❄️ *ANATO SMG* ❄️❄️\n\n`;
             
+            // Texto limpio con tus mayúsculas y anclaje real
             const cuerpo = `✅ *ACEPTO PROTEGER MI EQUIPO*\n\n` +
-                           `Hola, soy ${clienteNom.toUpperCase()}, de *${clienteUbi.toUpperCase()}*. ` +
+                           `Hola, soy *${clienteNom.toUpperCase()}*, de *${clienteUbi.toUpperCase()}*. ` +
                            `Acepto la Protección de mi Equipo con Multiservicios Anato S.M.G. ` +
-                           `¿Cuando Podrían ASistirme o Cuando sería mi Primera **CITA? ❄️`;
+                           `¿Cuando Podrían Asistirme o Cuando sería mi Primera CITA? ❄️`;
 
             const textoFinal = cabecera + cuerpo;
             const linkWa = `https://wa.me/${miTelefono}?text=${encodeURIComponent(textoFinal)}`;
             
-            setTimeout(() => { window.location.href = linkWa; }, 2000);
+            setTimeout(() => { window.location.href = linkWa; }, 1000);
         }
 
         function mostrarReferidos() {
@@ -107,7 +109,7 @@
                 if (!numLimpio.startsWith('58')) numLimpio = '58' + numLimpio;
 
                 const msgParaMi = `🚀 *NUEVO REFERIDO VIP*\n\n👤 *RECOMENDADOR:* ${yo}\n👉 *RECOMIENDA A:* ${amigo}\n\n💰 *Estado:* Descuento del 10% pendiente.`;
-                const msgParaAmigo = `¡Hola *${amigo}*! 👋 Te escribe *${yo}*. Te recomiendo a * Multiservicios Anato S.M.G.* para proteger tus equipos. 🛠️❄️ Mira tu invitación aquí: https://anatosmg-app.github.io/invitacionesencillas.html?cliente=${encodeURIComponent(amigo)}&lugar=${encodeURIComponent(clienteUbi)}`;
+                const msgParaAmigo = `¡Hola *${amigo}*! 👋 Te escribe *${yo}*. Te recomiendo a *Multiservicios Anato S.M.G.* para proteger tus equipos. 🛠️❄️ Mira tu invitación aquí: https://anatosmg-app.github.io/invitacionesencillas.html?cliente=${encodeURIComponent(amigo)}&lugar=${encodeURIComponent(clienteUbi)}`;
 
                 window.open(`https://wa.me/${miTelefono}?text=${encodeURIComponent(msgParaMi)}`, '_blank');
                 setTimeout(() => {
