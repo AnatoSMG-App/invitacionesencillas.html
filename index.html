@@ -55,11 +55,12 @@
     <script>
         const miTelefono = "584164308731"; 
 
-        // --- ANCLAJE MAESTRO CORREGIDO ---
+        // --- ANCLAJE MAESTRO (Sincronizado con el Generador) ---
         const urlParams = new URLSearchParams(window.location.search);
-        // Ahora acepta 'cliente', 'nombre' o 'nombreCliente' para asegurar el anclaje
-        const clienteNom = urlParams.get('cliente') || urlParams.get('nombre') || urlParams.get('nombreCliente') || "CLIENTE";
-        const clienteUbi = urlParams.get('lugar') || urlParams.get('ubicacion') || urlParams.get('lugarUbicacion') || "LOCALIDAD";
+        
+        // Buscamos 'n' para nombre y 'l' para lugar (como envía el Generador ahora)
+        const clienteNom = urlParams.get('n') || urlParams.get('cliente') || "CLIENTE";
+        const clienteUbi = urlParams.get('l') || urlParams.get('lugar') || "SU LOCALIDAD";
 
         // Mostrar saludo dinámico en pantalla
         document.getElementById('cliente-nombre').innerText = `HOLA, ${clienteNom.toUpperCase()}`;
@@ -77,17 +78,16 @@
         function pedirServicio() {
             sonar('audio-aplausos');
 
-            // --- DISEÑO SIMÉTRICO Y MAYÚSCULAS PROFESIONALES ---
-            const cabecera = `❄️ *MULTISERVICIOS* ❄️\n❄️❄️ *ANATO SMG* ❄️❄️\n\n`;
+            // --- DISEÑO SIMÉTRICO Y CABECERA LIMPIA ---
+            let msj = `❄️ *MULTISERVICIOS* ❄️\n❄️ *ANATO SMG* ❄️\n\n`;
             
-            // Texto limpio con tus mayúsculas y anclaje real
-            const cuerpo = `✅ *ACEPTO PROTEGER MI EQUIPO*\n\n` +
-                           `Hola, soy *${clienteNom.toUpperCase()}*, de *${clienteUbi.toUpperCase()}*. ` +
-                           `Acepto la Protección de mi Equipo con Multiservicios Anato S.M.G. ` +
-                           `¿Cuando Podrían Asistirme o Cuando sería mi Primera CITA? ❄️`;
+            // Texto con Mayúsculas Profesionales y sin asteriscos basura
+            msj += `✅ *ACEPTO PROTEGER MI EQUIPO*\n\n`;
+            msj += `Hola, soy *${clienteNom.toUpperCase()}*, de *${clienteUbi.toUpperCase()}*. `;
+            msj += `Acepto la Protección de mi Equipo con Multiservicios Anato S.M.G. `;
+            msj += `¿Cuando Podrían Asistirme o Cuando sería mi Primera CITA? ❄️`;
 
-            const textoFinal = cabecera + cuerpo;
-            const linkWa = `https://wa.me/${miTelefono}?text=${encodeURIComponent(textoFinal)}`;
+            const linkWa = `https://wa.me/${miTelefono}?text=${encodeURIComponent(msj)}`;
             
             setTimeout(() => { window.location.href = linkWa; }, 1000);
         }
@@ -109,7 +109,11 @@
                 if (!numLimpio.startsWith('58')) numLimpio = '58' + numLimpio;
 
                 const msgParaMi = `🚀 *NUEVO REFERIDO VIP*\n\n👤 *RECOMENDADOR:* ${yo}\n👉 *RECOMIENDA A:* ${amigo}\n\n💰 *Estado:* Descuento del 10% pendiente.`;
-                const msgParaAmigo = `¡Hola *${amigo}*! 👋 Te escribe *${yo}*. Te recomiendo a *Multiservicios Anato S.M.G.* para proteger tus equipos. 🛠️❄️ Mira tu invitación aquí: https://anatosmg-app.github.io/invitacionesencillas.html?cliente=${encodeURIComponent(amigo)}&lugar=${encodeURIComponent(clienteUbi)}`;
+                
+                // Link de referido también lleva el anclaje de nombre y lugar
+                const urlInvitacion = `https://anatosmg-app.github.io/invitacionesencillas.html?n=${encodeURIComponent(amigo)}&l=${encodeURIComponent(clienteUbi)}`;
+                
+                const msgParaAmigo = `¡Hola *${amigo}*! 👋 Te Escribe *${yo}*. Te Recomiendo a *Multiservicios Anato S.M.G.* para Proteger tus Equipos. 🛠️❄️ Mira tu Invitación Aquí: ${urlInvitacion}`;
 
                 window.open(`https://wa.me/${miTelefono}?text=${encodeURIComponent(msgParaMi)}`, '_blank');
                 setTimeout(() => {
